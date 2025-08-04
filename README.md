@@ -113,10 +113,17 @@ In order to have reachability to each site, we need to configure a routing proto
 
 ![ospf-show](images/005-ospf-nei.png)
 
+You can set the DNS server of the router using `set system nameserver x.x.x.x` command. You can optionally set a defualt route using your Bridge Network's gateway as the next-hop for the default route.
+
+![def-route](images/006b-default0-route.png)
 
 Another important configuration is Network Address Translation (NAT) for the end-hosts in each site to have internet access. Follow below commands to configure NAT in each router:
 
+![nat](images/006a-nat.png)
 
+We basically used PAT in this case which is achieved using `set nat source rule 100 translation address masquerade`.
+
+---
 ## 🔧 Step-by-Step Setup
 2. Splunk Enterprise Setup:
    First downlaod splunk enterprise and ubentu server. I will host splunk enterprise on uebntu server. 
