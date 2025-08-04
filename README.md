@@ -113,6 +113,10 @@ In order to have reachability to each site, we need to configure a routing proto
 
 ![ospf-show](images/005-ospf-nei.png)
 
+
+Another important configuration is Network Address Translation (NAT) for the end-hosts in each site to have internet access. Follow below commands to configure NAT in each router:
+
+
 ## 🔧 Step-by-Step Setup
 2. Splunk Enterprise Setup:
    First downlaod splunk enterprise and ubentu server. I will host splunk enterprise on uebntu server. 
