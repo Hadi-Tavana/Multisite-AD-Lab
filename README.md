@@ -117,6 +117,7 @@ Visit the Official [Splunk Website](https://www.splunk.com) log in or sign up. a
 
 5) Creating the Ubuntu VM:
 With the ISO downloaded, I proceeded to create the Ubuntu VM on vmware workstation:
+![ubentuServerVMOverview.png](images/sec/ubentuServerVMOverview.png)
  
 
 
