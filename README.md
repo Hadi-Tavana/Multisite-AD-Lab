@@ -102,3 +102,24 @@ Configuring all three sites' network:
   <img src="images/003%20-%20ip%20set%20site%20mazar.png" width="250">
 </p>
 
+## 🔧 Step-by-Step Setup
+2. Splunk Enterprise Setup:
+   First downlaod splunk enterprise and ubentu server. I will host splunk enterprise on uebntu server. 
+ 1) Introduction to Splunk Enterprise:
+ Splunk Enterprise is a widely adopted platform designed for collecting, indexing, and analyzing machine data in real time. It supports log ingestion from a wide range of sources and is commonly used in Security Operations Centers (SOCs) as a Security Information and Event Management (SIEM) solution. With its powerful search capabilities and rich visualizations, Splunk helps security teams detect threats, investigate incidents, and monitor system activity effectively.
+2)my benefits from working on splunk on this lab.
+Integrating Splunk Enterprise into my home lab environment has been a valuable step toward building practical cybersecurity skills. With this setup, I can continuously monitor system activity, detect suspicious behavior, and simulate real-world SOC operations. This hands-on approach not only strengthens my understanding of how modern security tools work but also improves my ability to respond to potential threats—an essential skillset for anyone pursuing a career in cybersecurity.
+3) Downloading Splunk Enterprise (Free Trial):
+Visit the Official [Splunk Website](https://www.splunk.com) log in or sign up. after logging in hover to Platrom and select free trials and Downalods. Select Splunk Enterprise Get My Free Trieal. Select your host operating system. Since meine is Ubentu server I  chose linux with .deb pacakge.
+
+4) Downloading Ubuntu server:
+ I downloaded the latest LTS version of Ubuntu from the [Ubuntu Downloads page](https://ubuntu.com/download/server). At the time of writing, the newest version available was Ubuntu 24.04.2 LTS, and the ISO file was approximately 3GB
+
+5) Creating the Ubuntu VM:
+With the ISO downloaded, I proceeded to create the Ubuntu VM on vmware workstation:
+ 
+
+
+
+
+   
