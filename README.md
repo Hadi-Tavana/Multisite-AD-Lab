@@ -81,4 +81,13 @@ This project simulates a realistic enterprise network environment across three g
 - Red teamers testing adversary simulation in isolated labs
 - SOC analysts refining Splunk dashboards and alerts
 
+---
 
+# Network Configuration
+
+Configuring all three sites' network:
+<p align="center">
+  <img src="images/001%20-%20ip%20set%20site%20kabul.png" width="250">
+  <img src="images/002%20-%20ip%20set%20site%20herat.png" width="250">
+  <img src="images/003%20-%20ip%20set%20site%20mazar.png" width="250">
+</p>
