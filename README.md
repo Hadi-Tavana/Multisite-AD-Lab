@@ -142,6 +142,49 @@ With the ISO downloaded, I proceeded to create the Ubuntu VM on vmware workstati
 ![ubentuServerVMOverview.png](images/sec/ubentuServerVMOverview.png)
   Network Configuration:
 ![Image of VMnet2 config](images/sec/VMnet2.png)
+
+6) Installing Uebntu Server:
+   I inserted uebntu-server's iso image to the newly created vm and booted up. I used default installation meaning just hit enter till the system starts rebooting.
+   After installing Ubuntu Server on your VMware VM, you can manage it remotely from your Windows machine using PuTTY, a popular SSH client. This makes it easier to copy commands, transfer files, and manage your SOC lab from a single interface. Ubuntu Server VM should be  powered on and connected to the same network with the host machine. 
+
+OpenSSH Server is installed and running on Ubuntu
+(This is usually enabled during Ubuntu Server installation. If not, install it with: sudo apt install openssh-server). Find the IP Address of Your Ubuntu Server
+On your Ubuntu VM, run:
+ip a
+Look for the IP address under your active network interface (e.g., 192.168.x.x).
+![ipaddress config of ubentu server](images/sec/ipA)
+Open PuTTY on Windows
+Enter the IP Address
+In the Host Name (or IP address) field, type the IP of your Ubuntu Server
+Make sure the Port is set to 22 (default for SSH)
+Connection type: SSH
+![putty](images/sec/putty)
+Click “Open”
+Log In
+
+A terminal window will open
+Enter your Ubuntu username and password
+![Login Putty](images/sec/loginPutty)
+![Putty Overview](images/sec/puttyOverview)
+   
+
+and I took a snapshot of the VM, which is in its clean, fully updated state. This will allow me to revert to this baseline if needed.
+
+7) uentu server network config:
+   since I am in HRT-Site. I am allocating the ip address 192.168.2.10 to the ubentu server. my default gateway will be the vyos router and my dns will be dns of my host machine. in general the dns server should be 8.8.8.8; however my country traffic is filtert via DNS and configureing a machines DNS to 8.8.8.8 will lose internet conenctivey. The slution is to use my home router as the DNS server , the same way all of my devices at home are configured.
+   to set ip address , default gateway and dns server on ubentu server I used the follwoing command: sudo nano /etc/netplan/00-installer-config.yaml
+   ![network config ubentu server](images/sec/netplan)
+   Now I have internet connectivity. 
+ ![ping](images/sec/ping)
+afterwards I updated my system using sudo apt update and sudo apt upgrade.
+
+ 
+
+
+
+
+   
+
     
  
 
