@@ -107,6 +107,11 @@ Configure network of the servers existing in each site.
 
 In order to have reachability to each site, we need to configure a routing protocol. In this case we are using OSPF. Configure OSPF on each site's VyOS router following the commands in the image below. 
 
+![ospf-config](images/005-ospf-config.png)
+
+`set protocols ospf redistribute connected` tells VyOS to advertise all directly connected networks (that are not already included via network statements) into OSPF. You can check OSPF neighborship with this command `show ip ospf neighbors`, use `run` with to excute non-configuration commands in configuration mode.
+
+
 
 ## 🔧 Step-by-Step Setup
 2. Splunk Enterprise Setup:
