@@ -90,8 +90,8 @@ We are going to use VMware for the servers and routers virtualization. In this p
 
 Each VyOS router needs at least two interfaces, one for the internal network (with a host-only VMnet) and another for WAN purposes (Using a VMnet with Bridge mode). In VMware go to `Edit` then click on `Vitual Network Editor`. You need to configure two VMnets (in this case, VMnet0 for Bridge adapter and VMnet1 for host-only). Then you have to go to your router's settings and add another Network adapter. Set each adapter to the correct VMnet. Do this for all routers. (the images below show VyOS-KBL's VMnet setup)
 <p align="center">
-  <img src="images/004a.vmnets.png" width="400">
-  <img src="images/004b.kblvmnet.png" width="400">
+  <img src="images/004a.vmnets.png" width="450">
+  <img src="images/004b.kblvmnet.png" width="450">
 </p>
 
 Now you can configure your router's interfaces. In order to apply changes to VyOS interfaces you need to go to 'configure' mode by using `configure` command. Then use this command `set interfaces ethernet eth0 address x.x.x.x/x` to manually set IP Address of a router's interface. Use `set interfaces ethernet eth1 address dhcp` for the bridged interfaces of the router to get an IP from the Bridge Network of your computer. You can optionally use `set interfaces ethernet eth0 description To-KBL` to set a description for your interface. Don't forget to commit and save your changes by `commit` and `save` commands. You can run `show interfaces` command to list the interfaces. Image below shows the interface config for the VyOS-KBL:
@@ -100,10 +100,12 @@ Now you can configure your router's interfaces. In order to apply changes to VyO
 
 Configure network of the servers existing in each site.
 <p align="center">
-  <img src="images/001%20-%20ip%20set%20site%20kabul.png" width="250">
-  <img src="images/002%20-%20ip%20set%20site%20herat.png" width="250">
-  <img src="images/003%20-%20ip%20set%20site%20mazar.png" width="250">
+  <img src="images/001%20-%20ip%20set%20site%20kabul.png" width="300">
+  <img src="images/002%20-%20ip%20set%20site%20herat.png" width="300">
+  <img src="images/003%20-%20ip%20set%20site%20mazar.png" width="300">
 </p>
+
+In order to have reachability to each site, we need to configure a routing protocol. In this case we are using OSPF. Configure OSPF on each site's VyOS router following the commands in the image below. 
 
 
 ## 🔧 Step-by-Step Setup
