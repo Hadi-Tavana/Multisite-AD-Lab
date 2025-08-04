@@ -88,12 +88,13 @@ This project simulates a realistic enterprise network environment across three g
 
 We are going to use VMware for the servers and routers virtualization. In this project, all routers and servers have been previously installed so you need to be able to install virtual machines such as Windows Server 2022 and VyOS routers by yourself. 
 
-Each VyOS router needs at least two interfaces, one for the internal network (with a host-only VMnet) and another for WAN purposes (Using a VMnet with Bridge mode). In VMware go to `Edit` then click on `Vitual Network Editor`. You need to configure two VMnets (in this case, VMnet0 for Bridge adapter and VMnet1 for host-only). Then you have to go to your router's settings and add another Network adapter. Set each adapter to the correct VMnet.
+Each VyOS router needs at least two interfaces, one for the internal network (with a host-only VMnet) and another for WAN purposes (Using a VMnet with Bridge mode). In VMware go to `Edit` then click on `Vitual Network Editor`. You need to configure two VMnets (in this case, VMnet0 for Bridge adapter and VMnet1 for host-only). Then you have to go to your router's settings and add another Network adapter. Set each adapter to the correct VMnet. Do this for all routers. (the images below show VyOS-KBL's VMnet setup)
 <p align="center">
   <img src="images/004a.vmnets.png" width="400">
   <img src="images/004b.kblvmnet.png" width="400">
 </p>
 
+Now you can configure your router's interfaces. Use this command `set interfaces `
 Configuring all three sites' network:
 <p align="center">
   <img src="images/001%20-%20ip%20set%20site%20kabul.png" width="250">
