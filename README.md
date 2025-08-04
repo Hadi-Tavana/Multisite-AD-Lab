@@ -94,13 +94,17 @@ Each VyOS router needs at least two interfaces, one for the internal network (wi
   <img src="images/004b.kblvmnet.png" width="400">
 </p>
 
-Now you can configure your router's interfaces. Use this command `set interfaces `
-Configuring all three sites' network:
+Now you can configure your router's interfaces. In order to apply changes to VyOS interfaces you need to go to 'configure' mode by using `configure` command. Then use this command `set interfaces ethernet eth0 address x.x.x.x/x` to manually set IP Address of a router's interface. Use `set interfaces ethernet eth1 address dhcp` for the bridged interfaces of the router to get an IP from the Bridge Network of your computer. You can optionally use `set interfaces ethernet eth0 description To-KBL` to set a description for your interface. Don't forget to commit and save your changes by `commit` and `save` commands. You can run `show interfaces` command to list the interfaces. Image below shows the interface config for the VyOS-KBL:
+
+![kbl-interfaces](images/004-kblvyosinterfaces.png)
+
+Configure network of the servers existing in each site.
 <p align="center">
   <img src="images/001%20-%20ip%20set%20site%20kabul.png" width="250">
   <img src="images/002%20-%20ip%20set%20site%20herat.png" width="250">
   <img src="images/003%20-%20ip%20set%20site%20mazar.png" width="250">
 </p>
+
 
 ## 🔧 Step-by-Step Setup
 2. Splunk Enterprise Setup:
