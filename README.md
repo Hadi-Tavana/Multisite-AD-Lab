@@ -123,7 +123,7 @@ Visit the Official [Splunk Website](https://www.splunk.com) log in or sign up. a
 With the ISO downloaded, I proceeded to create the Ubuntu VM on vmware workstation:
 ![ubentuServerVMOverview.png](images/sec/ubentuServerVMOverview.png)
   Network Configuration:
-[Image of VMnet2 config](images\sec\VMnet2.png)
+![Image of VMnet2 config](images/sec/VMnet2.png)
     
  
 
