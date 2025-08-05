@@ -195,7 +195,8 @@ I then took a snapshot of the VM at this clean, fully updated state to serve as 
 ⚠️ Note: Setting DNS to 8.8.8.8 caused internet loss due to regional filtering. Using my home router as DNS resolved the issue.
 🛠️ To Set Static IP
 Edit the Netplan configuration file:
-<pre>```bash sudo nano /etc/netplan/00-installer-config.yaml```</pre>
+<pre>```bash
+  sudo nano /etc/netplan/00-installer-config.yaml```</pre>
 📸 Netplan Configuration:
    ![network config ubentu server](images/sec/netplan.png)
    Apply changes and verify internet connectivity:
