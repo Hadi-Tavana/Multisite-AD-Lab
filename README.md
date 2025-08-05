@@ -158,14 +158,14 @@ Enter the IP Address
 In the Host Name (or IP address) field, type the IP of your Ubuntu Server
 Make sure the Port is set to 22 (default for SSH)
 Connection type: SSH
-![putty](images/sec/putty)
+![putty](images/sec/putty.png)
 Click “Open”
 Log In
 
 A terminal window will open
 Enter your Ubuntu username and password
-![Login Putty](images/sec/loginPutty)
-![Putty Overview](images/sec/puttyOverview)
+![Login Putty](images/sec/loginPutty.png)
+![Putty Overview](images/sec/puttyOverview.png)
    
 
 and I took a snapshot of the VM, which is in its clean, fully updated state. This will allow me to revert to this baseline if needed.
@@ -173,9 +173,9 @@ and I took a snapshot of the VM, which is in its clean, fully updated state. Thi
 7) uentu server network config:
    since I am in HRT-Site. I am allocating the ip address 192.168.2.10 to the ubentu server. my default gateway will be the vyos router and my dns will be dns of my host machine. in general the dns server should be 8.8.8.8; however my country traffic is filtert via DNS and configureing a machines DNS to 8.8.8.8 will lose internet conenctivey. The slution is to use my home router as the DNS server , the same way all of my devices at home are configured.
    to set ip address , default gateway and dns server on ubentu server I used the follwoing command: sudo nano /etc/netplan/00-installer-config.yaml
-   ![network config ubentu server](images/sec/netplan)
+   ![network config ubentu server](images/sec/netplan.png)
    Now I have internet connectivity. 
- ![ping](images/sec/ping)
+ ![ping](images/sec/ping.png)
 afterwards I updated my system using sudo apt update and sudo apt upgrade.
 
  
