@@ -152,7 +152,7 @@ OpenSSH Server is installed and running on Ubuntu
 On your Ubuntu VM, run:
 ip a
 Look for the IP address under your active network interface (e.g., 192.168.x.x).
-![ipaddress config of ubentu server](images/sec/ipA)
+![ipaddress config of ubentu server](images/sec/ipA.png)
 Open PuTTY on Windows
 Enter the IP Address
 In the Host Name (or IP address) field, type the IP of your Ubuntu Server
