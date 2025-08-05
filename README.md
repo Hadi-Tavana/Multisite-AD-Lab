@@ -163,7 +163,7 @@ After installation, I used PuTTY on my Windows host to connect to the Ubuntu Ser
 🔌 Prerequisites
 The VM must be powered on and connected to the same network as the host.
 Ensure OpenSSH Server is installed (enabled by default). If not, install it:
-```bash sudo apt install openssh-server```
+<pre lang="markdown">```bash sudo apt install openssh-server```</pre>
 🔍 Finding the IP Address
 Run this command on the Ubuntu VM:
 ```bash ip a```
