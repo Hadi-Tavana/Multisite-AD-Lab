@@ -133,57 +133,79 @@ You can verify NAT translations with `show nat source translations` command. Aft
 ---
 ## 🔧 Step-by-Step Setup
 2. Splunk Enterprise Setup:
-   First downlaod splunk enterprise and ubentu server. I will host splunk enterprise on uebntu server. 
- 1) Introduction to Splunk Enterprise:
+   I started by downloading both Splunk Enterprise and Ubuntu Server. Splunk will be hosted on the Ubuntu Server virtual machine.
+ 📌 Introduction to Splunk Enterprise:
  Splunk Enterprise is a widely adopted platform designed for collecting, indexing, and analyzing machine data in real time. It supports log ingestion from a wide range of sources and is commonly used in Security Operations Centers (SOCs) as a Security Information and Event Management (SIEM) solution. With its powerful search capabilities and rich visualizations, Splunk helps security teams detect threats, investigate incidents, and monitor system activity effectively.
 2)my benefits from working on splunk on this lab.
 Integrating Splunk Enterprise into my home lab environment has been a valuable step toward building practical cybersecurity skills. With this setup, I can continuously monitor system activity, detect suspicious behavior, and simulate real-world SOC operations. This hands-on approach not only strengthens my understanding of how modern security tools work but also improves my ability to respond to potential threats—an essential skillset for anyone pursuing a career in cybersecurity.
-3) Downloading Splunk Enterprise (Free Trial):
-Visit the Official [Splunk Website](https://www.splunk.com) log in or sign up. after logging in hover to Platrom and select free trials and Downalods. Select Splunk Enterprise Get My Free Trieal. Select your host operating system. Since meine is Ubentu server I  chose linux with .deb pacakge.
+⬇️ Downloading Splunk Enterprise (Free Trial)
+1.Visit the official [Splunk website](https://www.splunk.com)
+2.Log in or create a free account.
+3.Navigate to Products > Free Trials and Downloads.
+4.Select Splunk Enterprise, then click Get My Free Trial.
+5.Choose your host operating system. Since I’m using Ubuntu Server, I selected the Linux .deb package for Debian-based distributions.
 
-4) Downloading Ubuntu server:
+2.Downloading Ubuntu server:
  I downloaded the latest LTS version of Ubuntu from the [Ubuntu Downloads page](https://ubuntu.com/download/server). At the time of writing, the newest version available was Ubuntu 24.04.2 LTS, and the ISO file was approximately 3GB
 
-5) Creating the Ubuntu VM:
+   3.Creating the Ubuntu VM on VMware:
 With the ISO downloaded, I proceeded to create the Ubuntu VM on vmware workstation:
+-Allocated 2 CPUs, 4 GB RAM, and 30 GB disk space.
+-Used VMnet2(hostonly) to ensure connectivity with my vyos router.
 ![ubentuServerVMOverview.png](images/sec/ubentuServerVMOverview.png)
   Network Configuration:
 ![Image of VMnet2 config](images/sec/VMnet2.png)
 
-6) Installing Uebntu Server:
-   I inserted uebntu-server's iso image to the newly created vm and booted up. I used default installation meaning just hit enter till the system starts rebooting.
-   After installing Ubuntu Server on your VMware VM, you can manage it remotely from your Windows machine using PuTTY, a popular SSH client. This makes it easier to copy commands, transfer files, and manage your SOC lab from a single interface. Ubuntu Server VM should be  powered on and connected to the same network with the host machine. 
-
-OpenSSH Server is installed and running on Ubuntu
-(This is usually enabled during Ubuntu Server installation. If not, install it with: sudo apt install openssh-server). Find the IP Address of Your Ubuntu Server
-On your Ubuntu VM, run:
-ip a
-Look for the IP address under your active network interface (e.g., 192.168.x.x).
+4. Installing Uebntu Server:
+I attached the ISO to the new VM and started the system. I used the default installation options, pressing Enter until installation completed and the system rebooted.
+5. Enabling Remote Access with PuTTY
+After installation, I used PuTTY on my Windows host to connect to the Ubuntu Server VM.
+🔌 Prerequisites
+The VM must be powered on and connected to the same network as the host.
+Ensure OpenSSH Server is installed (enabled by default). If not, install it:
+```bash sudo apt install openssh-server```
+🔍 Finding the IP Address
+Run this command on the Ubuntu VM:
+```bash ip a```
+📸 Example:
 ![ipaddress config of ubentu server](images/sec/ipA.png)
-Open PuTTY on Windows
-Enter the IP Address
-In the Host Name (or IP address) field, type the IP of your Ubuntu Server
-Make sure the Port is set to 22 (default for SSH)
-Connection type: SSH
+💻 Access via PuTTY
+Open PuTTY on Windows.
+Enter the IP address in the Host Name field.
+Set Port to 22 and Connection Type to SSH.
+Click Open.
+📸 PuTTY Configuration:
 ![putty](images/sec/putty.png)
-Click “Open”
 Log In
-
 A terminal window will open
 Enter your Ubuntu username and password
 ![Login Putty](images/sec/loginPutty.png)
 ![Putty Overview](images/sec/puttyOverview.png)
    
 
-and I took a snapshot of the VM, which is in its clean, fully updated state. This will allow me to revert to this baseline if needed.
+I then took a snapshot of the VM at this clean, fully updated state to serve as a baseline for future rollback if needed.
 
 7) uentu server network config:
-   since I am in HRT-Site. I am allocating the ip address 192.168.2.10 to the ubentu server. my default gateway will be the vyos router and my dns will be dns of my host machine. in general the dns server should be 8.8.8.8; however my country traffic is filtert via DNS and configureing a machines DNS to 8.8.8.8 will lose internet conenctivey. The slution is to use my home router as the DNS server , the same way all of my devices at home are configured.
-   to set ip address , default gateway and dns server on ubentu server I used the follwoing command: sudo nano /etc/netplan/00-installer-config.yaml
+   Since I'm working in the HRT-Site environment, I assigned the following static IP settings:
+-IP Address: 192.168.2.10
+-Gateway: My VyOS router
+-DNS Server: My home router's IP (instead of 8.8.8.8, since external DNS is filtered in my country)
+⚠️ Note: Setting DNS to 8.8.8.8 caused internet loss due to regional filtering. Using my home router as DNS resolved the issue.
+🛠️ To Set Static IP
+Edit the Netplan configuration file:
+```bash sudo nano /etc/netplan/00-installer-config.yaml```
+📸 Netplan Configuration:
    ![network config ubentu server](images/sec/netplan.png)
-   Now I have internet connectivity. 
+   Apply changes and verify internet connectivity:
+   ``` bash sudo netplan apply```
+   ``` bash ping google.com```
+   📸 Ping Test:
  ![ping](images/sec/ping.png)
-afterwards I updated my system using sudo apt update and sudo apt upgrade.
+7. System Update
+Finally, I updated the Ubuntu system to ensure all packages were current:
+```bash sudo apt update```
+```bash sudo apt upgrade```
+
 
  
 
