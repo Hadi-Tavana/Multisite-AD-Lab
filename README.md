@@ -212,9 +212,52 @@ sudo apt update
 sudo apt upgrade</pre>
 
 
- 
+8.⚙️ Installing VMware Tools on Ubuntu Server
+Installing VMware Tools improves virtual machine performance and enables features such as better network drivers, time synchronization, and smoother integration with the host system.
+and aslo we need to share splunk setup from host machine wit the vm(ubentu server).
+For Ubuntu Server, the recommended method is to install the open-vm-tools package provided through the official Ubuntu repositories.
+📦 Step-by-Step Guide
+Update Package List
+<pre lang="Markdown">
+bash
+sudo apt update
+</pre>
+Install Open VM Tools 
+<pre lang="Markdown">
+bash
+sudo apt install open-vm-tools -y
+</pre>
+Verify the Installation
+Check the version to confirm installation:
+<pre lang="Markdown">
+bash
+vmware-toolbox-cmd -v
+</pre>
+[vmTool](images/sec/vmTool)
+📌 Notes
+There's no need to mount the ISO or install VMware Tools manually—the open-vm-tools package is the official and preferred method for Ubuntu.
+Now that VMware Tools is installed, your VM will perform better, and features like time sync and graceful shutdown will work reliably.
 
+🔄 Sharing Splunk Installer from Host to Ubuntu Server VM
+To transfer the Splunk Enterprise installer from your Windows host machine to your Ubuntu Server VM, you can use a VMware feature called Shared Folders. This allows your virtual machine to access a directory from your host system as if it were part of the VM's file system.
 
+🧰 What is Shared Folders?
+Shared Folders is a VMware Workstation/Player feature that enables file sharing between the host and guest systems without using USB drives, SCP, or network file transfers. It's ideal for quickly moving files like installers, scripts, or configuration files.
+
+📦 Step-by-Step Guide to Enable Shared Folders
+🔒 Ensure VMware Tools (open-vm-tools) is installed and running on your Ubuntu Server before proceeding.
+1. Configure Shared Folder in VMware
+-Power off your Ubuntu VM (if it's running).
+-Open VMware Workstation or Player.
+-Select your VM > Click Edit virtual machine settings.
+-Go to the Options tab.
+-Select Shared Folders.
+-Choose Always enabled or Enabled until next power off or suspend.
+-Click Add… and:
+-Browse to the folder on your host where the Splunk installer (.deb file) is located.
+-Give it a name like splunk-share.
+-Click Finish, then OK to apply the changes.
+-Start your Ubuntu VM.
 
 
    
