@@ -129,6 +129,54 @@ You can verify NAT translations with `show nat source translations` command. Aft
   <img src="images/internetaccess.png" width="400">
 </p>
 
+---
+
+# Site-to-Site IPsec VPN Configuration
+
+In this section, we are going to configure site-to-site IPsec VPN between all three sites. We are specifically Route-Based VPN in this lab. For more information you can refer to VyOS documentation of Site-to-Site IPsec [here](https://docs.vyos.io/en/latest/configuration/vpn/ipsec/site2site_ipsec.html)
+
+## IKE Phase 1 (ISAKMP Proposal):
+Configure IKE phase 1 on all routers. Remember that the negotiated parameters in this phase must match across all the routers in all sites except for the `lifetime` parameter but it is recommended to use the same value for all peers. Do the same for all the other routers participating in the VPN configuration. Image below shows IKE phase 1 config for KBL router:
+
+![IKE-Phase1](images/vpn/vpnIKEphase1.png)
+
+## ESP Phase 2 (IPsec Proposal):
+Configure ESP phase 2 on all routers. The parameters must match on all routers. Do the same for all peers:
+
+![ESP-Phase2](images/vpn/vpnIKEphase2.png)
+
+Specify interface facing to the protected destination. In this case eth3 on VyOS-KBL:
+
+![VPN-Interface](images/vpn/vpnInterface.png)
+
+## PSK Configuration:
+Configure PSK keys and authentication ids for this key if authentication type is PSK. In our case, there are three peers participating in VPN configuration, so three IDs should be created. Then you need to specify the PSK secret key (same on all peers):
+
+![PSJ](images/vpn/vpnPSKconfig.png)
+
+## Configure Peers:
+Configure peer and apply IKE-group and esp-group to each peer. Remember `connection type` values are either `initiate` or `respond` in this case. For the VyOS-KBL router, both connections to each peer is set to `initiate`. The `initiate` connection-type indicates that this peer starts the IPsec negotiation (sends the first IKE packet) and `respond` connection-type indicates that the peer waits for incoming IKE negotiations (this connection-type is configured in MZR and HRT sites for KBL peer). The `local-address` and `remote-address` define WAN IP address of the initiator and responder.
+
+HRT Peer configuration:
+![peer-hrt](images/vpn/vpnPeerHRT.png)
+MZR Peer configuration:
+![peer-mzr](images/vpn/vpnPeerMZR.png)
+
+## VTI Tunnels configuration:
+For Route-based VPN create VTI interfaces, set IP addresses to these interfaces and bind these interfaces to the VPN peers.
+
+![VTI](images/vpn/vpnVti.png)
+
+After this, you will need to route the overlay network. Delete the OSPF internal routes (192.168.1.0/24 for VyOS-KBL) and instead route this network and the tunnel network (10.0.0.0/24) using static routes. Remember to use different routing protocols in overlay and underlay to avoid recursive routing. Do this on all routers.
+
+![overlay](images/vpn/overlay.png)
+
+## Checking VPN Configuration:
+confirm your VPN connection throughout all sites using `show vpn ike sa` and `show vpn ipsec sa`. Images below show IKE and IPsec establishments for VyOS-HRT:
+
+![ike-sa](images/vpn/vpnIkeSa.png)
+And
+![ipsec-sa](images/vpn/vpnIpsecSa.png)
 
 ---
 ## 🔧 Step-by-Step Setup
