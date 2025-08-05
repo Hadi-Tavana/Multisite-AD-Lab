@@ -123,8 +123,10 @@ Another important configuration is Network Address Translation (NAT) for the end
 
 We basically used PAT in this case which is achieved using `set nat source rule 100 translation address masquerade`.
 You can verify NAT translations with `show nat source translations` command. After NAT is configured, make sure end hosts have internet access by pinging google.com.
+
 <p align="center">
-  <img src="">
+  <img src="images/nattranslations.png" width="400">
+  <img src="images/internetaccess.png" width="400">
 </p>
 
 
