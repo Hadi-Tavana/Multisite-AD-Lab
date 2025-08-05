@@ -163,10 +163,11 @@ After installation, I used PuTTY on my Windows host to connect to the Ubuntu Ser
 🔌 Prerequisites
 The VM must be powered on and connected to the same network as the host.
 Ensure OpenSSH Server is installed (enabled by default). If not, install it:
-<pre lang="markdown">```bash sudo apt install openssh-server```</pre>
+<pre lang="markdown">bash sudo apt install openssh-server</pre>
 🔍 Finding the IP Address
 Run this command on the Ubuntu VM:
-```bash ip a```
+<pre lang="markdown">bash
+  ip a</pre>
 📸 Example:
 ![ipaddress config of ubentu server](images/sec/ipA.png)
 💻 Access via PuTTY
@@ -193,18 +194,21 @@ I then took a snapshot of the VM at this clean, fully updated state to serve as 
 ⚠️ Note: Setting DNS to 8.8.8.8 caused internet loss due to regional filtering. Using my home router as DNS resolved the issue.
 🛠️ To Set Static IP
 Edit the Netplan configuration file:
-```bash sudo nano /etc/netplan/00-installer-config.yaml```
+<pre lang="markdown">bash
+  sudo nano /etc/netplan/00-installer-config.yaml</pre>
 📸 Netplan Configuration:
    ![network config ubentu server](images/sec/netplan.png)
    Apply changes and verify internet connectivity:
-   ``` bash sudo netplan apply```
-   ``` bash ping google.com```
+   <pre lang="markdown"> bash 
+   sudo netplan apply
+   ping google.com </pre>
    📸 Ping Test:
  ![ping](images/sec/ping.png)
 7. System Update
 Finally, I updated the Ubuntu system to ensure all packages were current:
-```bash sudo apt update```
-```bash sudo apt upgrade```
+<pre lang="markdown">bash
+sudo apt update
+sudo apt upgrade</pre>
 
 
  
