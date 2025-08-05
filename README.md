@@ -252,13 +252,33 @@ Shared Folders is a VMware Workstation/Player feature that enables file sharing 
 -Select your VM > Click Edit virtual machine settings.
 -Go to the Options tab.
 -Select Shared Folders.
+
+Example:
+
+![shareFolderConfig](images/sec/shareFolderConfig.png)
 -Choose Always enabled or Enabled until next power off or suspend.
 -Click Add… and:
 -Browse to the folder on your host where the Splunk installer (.deb file) is located.
 -Give it a name like splunk-share.
 -Click Finish, then OK to apply the changes.
+![shreFolderBrowse](images/sec/shareFolderBrowse.png)
 -Start your Ubuntu VM.
 
+2. Access the Shared Folder in Ubuntu
+   
+Once the VM is running, VMware automatically mounts the shared folder to the path:
+
+<pre lang="Markdown">bash
+cd /mnt/hgfs
+</pre>
+
+To view the shared folder:
+
+<pre lang="Markdown">bash
+  ls /mnt/hgfs
+</pre>
+
+You should see your shared folder name(e.g., 
 
    
 
