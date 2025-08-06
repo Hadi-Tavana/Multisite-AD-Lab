@@ -559,8 +559,69 @@ In this documentation, we will walk through the steps to install and configure t
 
 📥 Step 1: Download and Install the Forwarder
 Download the 64-bit MSI installer for Windows.
-head to the [splunk website](www.splunk.com)
- 
+head to the [splunk website](https://www.splunk.com/) and log in or sing up then go to the products and click on splunk forwarder and use the free trieal option chose the one which fits your os for me it's the 64 bit windows with .msi extention. 
+  
+ ![downloadSplunkForwarder](images/sec/downloadSplunkForwarder.png)
+
+
+afterwards run the installer with default settings, since we don't use deploment server just leave it empty and hit next when you get to recieving server supply your ubentu server's ip address with the default 9997 as port.
+
+![installationSplunkForwarder](/images/sec/installationSplunkForwarder.png)
+
+after the installation is finished 
+
+![finishedInstallation](images/sec/finishedInstallation.png)
+
+it's now time to downlaod , install and configure sysmon
+
+🔍 What is Sysmon?
+
+Sysmon (System Monitor) is a Windows system service and device driver developed by Microsoft as part of the Sysinternals Suite. It provides detailed information about process creations, network connections, and file creation time changes, among other system activity.
+
+Sysmon logs this data to the Windows Event Log under the Microsoft-Windows-Sysmon/Operational channel. This high-fidelity logging is extremely valuable for threat detection, incident response, and behavioral monitoring.
+
+🧪 How Sysmon Relates to This Lab
+
+In this lab environment, we simulate attack scenarios like brute-force attempts on RDP using Kali Linux and generate malicious behavior using Atomic Red Team. Sysmon acts as our local telemetry collector, recording fine-grained security events on the Windows machines.
+
+These logs are then collected by the Splunk Universal Forwarder and sent to the Splunk Enterprise server for indexing and analysis. By using Sysmon, we enhance the visibility of suspicious or malicious activities, helping us to detect and investigate incidents effectively through Splunk dashboards and alerts.
+
+⬇️ How to Download Sysmon
+Navigate to the official Sysinternals website:
+
+🔗 [sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
+
+Click the Download Sysmon button to download a ZIP file containing:
+
+![sysmonDownlaod](images/sec/sysmonDownlaod)
+
+Sysmon.exe – the executable to run Sysmon.
+
+Sysmon64.exe – 64-bit version.
+
+EULA.txt – license agreement.
+
+Extract the contents of the ZIP file to a directory of your choice (e.g., C:\Sysmon).
+
+now we need a configuration fie for sysmon , for thsi lab I used Olaf's configuration.
+
+🛠️ Sysmon Config by Olaf Hartong
+
+To enhance the visibility and effectiveness of Sysmon in detecting suspicious activity, we use a community-developed configuration file maintained by Olaf Hartong. Olaf's Sysmon config is a well-maintained, modular, and security-focused configuration designed to maximize valuable event logging while reducing noise.
+
+This configuration includes predefined rules for detecting various tactics and techniques based on the MITRE ATT&CK framework. It is widely adopted in blue team environments and threat hunting labs.
+
+📥 How to Download
+You can download the latest version of Olaf’s Sysmon configuration from his GitHub repository using the following steps:
+
+Visit the repository:
+
+🔗[github repo](https://github.com/olafhartong/sysmon-modular)
+
+
+
+
+  
 
 
 
