@@ -1,4 +1,4 @@
-<img width="1376" height="584" alt="image" src="https://github.com/user-attachments/assets/67ee9cf5-3db5-4ed5-9b0e-0baea2aaa91a" /># Multisite Active Directory Collaborated Lab with IPsec VPN and Security Monitoring
+Lab with IPsec VPN and Security Monitoring
 Welcome to the multisite active directory lab with site-to-site VPN configuration and implemented security measures. This lab has been created in collaboration with [edris526](https://github.com/edris526).
 
 ![PROJECT-MAP](images/project-diagram.png)
