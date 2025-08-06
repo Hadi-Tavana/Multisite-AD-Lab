@@ -1,4 +1,4 @@
-# Multisite Active Directory Collaborated Lab with IPsec VPN and Security Monitoring
+<img width="1376" height="584" alt="image" src="https://github.com/user-attachments/assets/67ee9cf5-3db5-4ed5-9b0e-0baea2aaa91a" /># Multisite Active Directory Collaborated Lab with IPsec VPN and Security Monitoring
 Welcome to the multisite active directory lab with site-to-site VPN configuration and implemented security measures. This lab has been created in collaboration with [edris526](https://github.com/edris526).
 
 ![PROJECT-MAP](images/project-diagram.png)
@@ -326,11 +326,111 @@ To view the shared folder:
   ls /mnt/hgfs
 </pre>
 
-You should see your shared folder name(e.g., 
+and if you couldn't see your shared folder after ruuning the above command, try this command first
 
-   
+<pre lang="Markdown">bash
+  sudo vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other
+</pre>
 
-    
+  This command mounts the shared folder from the VMware host system into your Ubuntu Server VM, using VMware’s FUSE-based file system.
+
+You should see your shared folder name(e.g.,project.lab):
+
+![sharedFolder](images/sec/sharedFolder.png)
+
+access the shared folder
+
+<pre lang="Markdown">bash
+  cd /mnt/hgfs/splunk-share
+</pre>
+
+Now you can access the Splunk installer from there and install it:
+
+<pre lang="Markdown">bash
+sudo dpkg -i splunk-*.deb
+</pre>
+
+![splunkInstallation](images/sec/splunkInstallation.png)
+
+🛠️ You may need to run sudo apt --fix-broken install if dependencies are missing.
+
+now change to the direcorty where splunk is:
+
+<pre lang="Markdown">bash
+  cd /opt/splunk
+</pre>
+
+and list it's contains:
+
+<pre lang="Markdown">bash
+  ls -la
+</pre>
+
+![splunkConfig1](images/sec/splunkConfig1.png)
+
+this shows that splunk is installed successfully
+
+now hit to the follwing directory and run the follwing commands which will run splunk:
+
+<pre lang="Markdown">bash
+cd /bin/splunk
+  sudo ./splunk start
+</pre>
+
+go through the liesanse aggrement and you will be asked to a username and password. 
+
+now we want to enable splunk on boot so every time the vm boots up splunk will be running:
+
+<pre lang="Markdonw">bash
+  cd bin
+  sudo ./splunk enable boot-start
+</pre>
+
+![splunkEnabledonBootStart](images/sec/splunkEnabledonBootStart.png)
+
+the next step is to install splunk forwarder on our windows machines. I am going to demostrate how I did it on windows 10. It should be the same accross other vms too. 
+First we need to join my windows mashine to the domain. To do so will asign a static ip address to it and check it's reachblitiy with the DC.
+
+My windows 10's network adapter is in vmnet2(Hostonly) which is the same vmnet in which my ubentu server, vyos router and kali lunix are.
+
+![ipconfigWindows10](images/sec/ipconfigWindows10.png)
+
+I joined my windows 10 vm to project.lab domain and also renamed it to HRT-PC01
+
+![ipconfigHRT-PC01](images/sec/ipconfigHRT-PC01.png)
+
+![welcomeToProject.lab](images/sec/welcomeToProject.lab.png)
+
+afterwards you pc will require a reboot and then log in as a domain user:
+
+![loginAsAdmin](images/sec/loginAsAdmin.png)
+
+
+now my vm is a part of project.lab domain
+
+![aPartofDomain](images/sec/aPartofDomain.png)
+
+📦 What is Splunk Universal Forwarder?
+The Splunk Universal Forwarder (UF) is a lightweight version of Splunk designed specifically for collecting and forwarding logs and machine data to a central Splunk instance (typically a Splunk Enterprise or Splunk Cloud server). It runs as a background service and is optimized for minimal resource usage while maintaining high-speed data transfer.
+
+Unlike the full Splunk Enterprise instance, the Universal Forwarder has no web interface or data indexing capabilities. Its primary role is to gather data (e.g., Windows Event Logs, files, registry, or performance metrics) from the host and send it to a central Splunk indexer or heavy forwarder.
+
+🧠 Why Use Splunk Forwarder?
+Using a Universal Forwarder in a distributed Splunk architecture offers several key benefits:
+
+Centralized Logging: Collect logs from multiple endpoints and forward them to a centralized Splunk server for analysis and visualization.
+
+Lightweight & Efficient: Designed to run with minimal system impact, making it ideal for desktops, servers, or embedded systems.
+
+Secure Data Transmission: Supports encrypted and authenticated communication with your Splunk indexers.
+
+Real-time Data Delivery: Enables near real-time forwarding of logs, which is crucial for security monitoring, incident response, and compliance.
+
+In this documentation, we will walk through the steps to install and configure the Splunk Universal Forwarder on a Windows 10 machine and ensure it forwards logs to a Splunk Enterprise server running on a different system (in our case, an Ubuntu server).
+
+📥 Step 1: Download and Install the Forwarder
+Download the 64-bit MSI installer for Windows.
+head to the [splunk website](www.splunk.com)
  
 
 
