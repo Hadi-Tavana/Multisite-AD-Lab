@@ -5,6 +5,18 @@ Welcome to the multisite active directory lab with site-to-site VPN configuratio
 
 This project simulates a realistic enterprise network environment across three geographically separated Active Directory (AD) sites, interconnected through IPSec VPN tunnels. It provides a platform for blue team monitoring and red team simulation, suitable for learning, research, and testing in cybersecurity and system administration.
 
+---
+
+## 📚 Table of Contents
+
+1. [Project Overview](#project-overview)
+2. [Network Configuration](#network-configuration)
+3. [Site-to-Site IPsec VPN Configuration](#site-to-site-ipsec-vpn-configuration)
+4. [AD DS Installation and Configuration](#ad-ds-installation-and-configuration)
+5. [Security Monitoring & Adversary Emulation](#security-monitoring-and-adversary-emulation)
+
+---
+
 # Project Overview
 
 ## 🌐 Domain: `project.lab`
@@ -294,7 +306,9 @@ Finally check the HRT-DC and MZR-DC servers if they have recieved the mentioned 
 </p>
 
 ---
-## 🔧 Step-by-Step Setup
+
+# Security Monitoring and Adversary Emulation
+
 2. Splunk Enterprise Setup:
    I started by downloading both Splunk Enterprise and Ubuntu Server. Splunk will be hosted on the Ubuntu Server virtual machine.
  📌 Introduction to Splunk Enterprise:
