@@ -273,8 +273,8 @@ Put each site's DC to its coresponding site. You can drag and drop the servers t
 Next, create site links between the sites. An inter-site link is a logical connection in Active Directory that represents the network path between two or more AD sites. It is used by Active Directory replication to transfer changes between domain controllers (DCs) that are in different physical or logical sites. By default, Active Directory inter-site replication happens every 180 minutes. You can change this by going to a site link's properties.
 
 <p align="center">
-  <img src="images/AD/sitesLink.png" width="400">
-  <img src="images/AD/sitesInterSite" width="400">
+  <img src="images/AD/siteLink.png" width="400">
+  <img src="images/AD/sitesInterSite.png" width="400">
 </p>
 
 ### Replication Test
