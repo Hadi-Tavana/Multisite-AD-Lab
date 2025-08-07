@@ -577,6 +577,89 @@ after the installation is finished
 
 ![finishedInstallation](images/sec/finishedInstallation.png)
 
+🔧 Configuring Splunk Universal Forwarder to Send Windows Event Logs to a Specific Index
+
+To configure which telemetry data (Windows Event Logs) the Splunk Universal Forwarder should send and to which index, follow these steps:
+
+✅ Step 1: Create the inputs.conf File
+1.Open Notepad as Administrator
+
+-Click on Start, search for Notepad
+
+-Right-click Notepad → Run as administrator
+
+2.Paste the following configuration into Notepad:
+
+<pre lang="Markdown">
+
+  [WinEventLog://Application]
+index = endpoint
+disabled = false
+
+[WinEventLog://Security]
+index = endpoint
+disabled = false
+
+[WinEventLog://System]
+index = endpoint
+disabled = false
+
+[WinEventLog://Microsoft-Windows-Sysmon/Operational]
+index = endpoint
+disabled = false
+renderXml = true
+source = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+  
+</pre>
+
+🔁 You can customize the index name as desired. For example, I used HRT-PC01 to match the name of my VM.
+
+3.Save the file to the following path:
+
+<pre lang="Markdown">
+  
+C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
+  
+</pre>
+
+This configuration tells the Universal Forwarder to collect logs from:
+
+-Application
+
+-Security
+
+-System
+
+-Sysmon Operational Channel
+
+And forwards them all to the specified Splunk index (e.g., endpoint).
+
+![index=HTR-PC01](imgaes/sec/index=HTR-PC01.png)
+
+✅ Restarting the Splunk Forwarder Service
+Once the configuration changes are made (e.g., updating inputs.conf or outputs.conf), you need to restart the Splunk Forwarder service to apply those changes:
+
+1.Press Win + R, type services.msc, and hit Enter.
+
+2.In the Services window, locate SplunkForwarder.
+
+3.Right-click it and choose Restart.
+
+👤 Service Account Check
+Make sure the Splunk Forwarder service is running under the Local System account:
+
+Right-click on SplunkForwarder in Services and select Properties.
+
+1.Go to the Log On tab.
+
+2.Ensure Local System account is selected.
+
+-If not, change it to Local System and restart the service again.
+
+-This ensures the forwarder has sufficient permissions to collect logs from Sysmon and Windows event logs.
+
+[localSystemAccount](images/sec/localSystemAccount.png)
+  
 it's now time to downlaod , install and configure sysmon
 
 🔍 What is Sysmon?
@@ -598,15 +681,15 @@ Navigate to the official Sysinternals website:
 
 Click the Download Sysmon button to download a ZIP file containing:
 
-![sysmonDownlaod](images/sec/sysmonDownlaod)
+![sysmonDownlaod](images/sec/sysmonDownlaod.png)
 
-Sysmon.exe – the executable to run Sysmon.
+-Sysmon.exe – the executable to run Sysmon.
 
-Sysmon64.exe – 64-bit version.
+-Sysmon64.exe – 64-bit version.
 
-EULA.txt – license agreement.
+-EULA.txt – license agreement.
 
-Extract the contents of the ZIP file to a directory of your choice (e.g., C:\Sysmon).
+-Extract the contents of the ZIP file to a directory of your choice (e.g., C:\Sysmon).
 
 now we need a configuration fie for sysmon , for thsi lab I used Olaf's configuration.
 
@@ -621,14 +704,102 @@ You can download the latest version of Olaf’s Sysmon configuration from his Gi
 
 Visit the repository:
 
-🔗[github repo](https://github.com/olafhartong/sysmon-modular)
+🔗[github repo](https://raw.githubusercontent.com/olafhartong/sysmon-modular/master/sysmonconfig.xml)
+
+once you visited  the webpage right click it and hit save as. 
+
+![sysmonConfig](images/sec/sysmonConfig.png)
+
+extrct sysmon and put the extracted file on the same direcotry as sysmonconfig.xml and open powershell in the direcotyr.
+
+![sysmonWithPowershell](images/sec/sysmonWithPowershell.png)
+
+then run this command:
+
+<pre lang="Markdown">
+  powershell
+
+  .\sysmon64.exe -i .\sysmonconfig.xml
+
+</pre>
+
+![sysmonInstallition](images/sec/sysmonInstallition.png)
+
+Accessing the Splunk Web Interface
+Now that both Splunk and Sysmon are properly configured, it's time to make a few final configurations on the Splunk server itself.
+
+Ensure that your Ubuntu server (running Splunk) and your Windows VM (running Sysmon) are on the same network and can communicate with each other. In my setup, both machines are connected to VMnet2, which is configured as a Host-only network in VMware.
+
+To access the Splunk Web Interface:
+
+1.Open your browser on your host machine.
+
+2.In the address bar, type the IP address of your Ubuntu server followed by port 8000.
+Example:
+http://192.168.2.10:8000
+
+3.This will bring up the Splunk login page. Use the credentials you created during the installation to log in.
+
+![splunkLoginPage.png](images/sec/splunkLoginPage.png)
 
 
+ Create a New Index in Splunk
+ 
+After logging in to the Splunk Web Interface:
 
+1.Go to the Settings menu (top right).
+
+2.Click on Indexes.
+
+3.On the Indexes page, click New Index.
+
+4.Name the index:
+  
+  I named it HRT-PC01
+  ⚠️ Make sure the name matches the one used in the inputs.conf file.
+
+  ![creatingIndex](images/sec/creatingIndex.png)
+
+  Leave other settings as default or adjust based on your preference.
+
+Click Save.
+
+  you should be able to see your newly created index:
+
+  ![index=hrt-pc01](images/sec/index=hrt-pc01)
 
   
+🔄 Step 4: Configure Splunk to Receive Logs
+To allow your Splunk server to receive logs from the forwarder (HRT-PC01):
 
+In splunk web interface navigate to Settings > Forwarding and receiving.
 
+Under Receive data, click Add new.
 
+Enter 9997 as the port number and click Save.
 
-   
+🔐 This is the port the Universal Forwarder will use to send data to Splunk. Ensure this port is open in your firewall if applicable.
+
+✅ At this point, your Splunk server is now ready to receive data on port 9997.
+
+![port](images/sec/port.png)
+
+Step 7: Verify Endpoint Telemetry in Splunk
+
+Head over to the Apps section in the top navigation bar.
+
+Select Search & Reporting.
+
+In the search bar, type:
+<pre lang="Markdown">
+spl
+index="HRT-PC01"
+</pre>
+Press Enter.
+
+You will now see all telemetry data that Splunk has received from the Windows endpoint HRT-PC01.
+
+This data includes logs collected by Sysmon such as process creation, network connections, registry changes, and more—offering detailed visibility into system activity that can be used for detection and investigatio
+
+  ![telemetry](images/sec/telemetry.png)
+  
