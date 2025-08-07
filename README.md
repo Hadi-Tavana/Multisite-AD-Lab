@@ -766,7 +766,7 @@ Click Save.
 
   you should be able to see your newly created index:
 
-  ![index=hrt-pc01](images/sec/index=hrt-pc01)
+  ![index=hrt-pc01](images/sec/index=hrt-pc01.png)
 
   
 🔄 Step 4: Configure Splunk to Receive Logs
