@@ -634,7 +634,7 @@ This configuration tells the Universal Forwarder to collect logs from:
 
 And forwards them all to the specified Splunk index (e.g., endpoint).
 
-![index=HTR-PC01](imgaes/sec/index=HTR-PC01.png)
+![index=HTR-PC01](images/sec/index=HTR-PC01.png)
 
 ✅ Restarting the Splunk Forwarder Service
 Once the configuration changes are made (e.g., updating inputs.conf or outputs.conf), you need to restart the Splunk Forwarder service to apply those changes:
