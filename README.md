@@ -658,7 +658,7 @@ Right-click on SplunkForwarder in Services and select Properties.
 
 -This ensures the forwarder has sufficient permissions to collect logs from Sysmon and Windows event logs.
 
-[localSystemAccount](images/sec/localSystemAccount.png)
+![localSystemAccount](images/sec/localSystemAccount.png)
   
 it's now time to downlaod , install and configure sysmon
 
