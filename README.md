@@ -310,12 +310,17 @@ Finally check the HRT-DC and MZR-DC servers if they have recieved the mentioned 
 # Security Monitoring and Adversary Emulation
 
 2. Splunk Enterprise Setup:
+   
    I started by downloading both Splunk Enterprise and Ubuntu Server. Splunk will be hosted on the Ubuntu Server virtual machine.
+   
  📌 Introduction to Splunk Enterprise:
+
  Splunk Enterprise is a widely adopted platform designed for collecting, indexing, and analyzing machine data in real time. It supports log ingestion from a wide range of sources and is commonly used in Security Operations Centers (SOCs) as a Security Information and Event Management (SIEM) solution. With its powerful search capabilities and rich visualizations, Splunk helps security teams detect threats, investigate incidents, and monitor system activity effectively.
 2)my benefits from working on splunk on this lab.
 Integrating Splunk Enterprise into my home lab environment has been a valuable step toward building practical cybersecurity skills. With this setup, I can continuously monitor system activity, detect suspicious behavior, and simulate real-world SOC operations. This hands-on approach not only strengthens my understanding of how modern security tools work but also improves my ability to respond to potential threats—an essential skillset for anyone pursuing a career in cybersecurity.
+
 ⬇️ Downloading Splunk Enterprise (Free Trial)
+
 1.Visit the official [Splunk website](https://www.splunk.com)
 2.Log in or create a free account.
 3.Navigate to Products > Free Trials and Downloads.
