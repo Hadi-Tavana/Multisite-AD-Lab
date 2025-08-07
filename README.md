@@ -566,7 +566,10 @@ In this documentation, we will walk through the steps to install and configure t
 Download the 64-bit MSI installer for Windows.
 head to the [splunk website](https://www.splunk.com/) and log in or sing up then go to the products and click on splunk forwarder and use the free trieal option chose the one which fits your os for me it's the 64 bit windows with .msi extention. 
   
- ![downloadSplunkForwarder](images/sec/downloadSplunkForwarder.png)
+ ![downloadSplunkForwarder](images/sec/forwarderDownlaod.png)
+
+
+![forwarderDownlaod2](images/sec/forwarderDownlaod2.png)
 
 
 afterwards run the installer with default settings, since we don't use deploment server just leave it empty and hit next when you get to recieving server supply your ubentu server's ip address with the default 9997 as port.
