@@ -374,11 +374,67 @@ sudo apt update
 sudo apt upgrade</pre>
 
 
- 
+### 🔐 Security Simulation: Brute Force Detection via RDP
+
+This section demonstrates a security simulation where a brute-force attack is launched using Hydra against a Windows machine with RDP enabled. The objective is to observe how this activity is logged and visualized in Splunk for security monitoring and alerting.
 
 
+ 🖧 Step 1: Configure Kali Linux Network
+Ensure Kali Linux is on the same network segment as the target machine.
+
+![NetworkConfig](images/sec/networkconfig.png)
+
+Verify connectivity. Ping the target machine and google.com
+
+![NetworkCheck](images/sec/networkcheck.png)
+
+🧰 Step 2: Update Kali Linux Packages
+Before installing or using any tools, ensure your Kali Linux system is up to date.
+
+Run the following command in the terminal:
+
+![apt-update](images/sec/apt-get-update.png)
+
+This will:
+
+Refresh the package list (apt-get update)
+
+Upgrade all installed packages to their latest version (apt-get upgrade)
+
+💡 Keeping Kali updated ensures you have the latest features, tools, and security patches.
+
+📁 Step 3: Prepare Wordlist Files for Brute-Force Attack
+To organize the password lists you’ll use for the Hydra brute-force attack, create a dedicated directory on your Kali Linux desktop.
+
+🔨 Create a Directory on Desktop
+Open a terminal and run: `mkdir project.lab`
+
+![directory](images/sec/project.lab-dir.png)
+
+This folder will store your custom or existing wordlists.
+
+📄 Add Wordlists
+We'll create a short custom password list based on rockyou.txt and add a known valid credential (admin@123) for Hydra to find during the brute-force simulation.
+
+Go to `/usr/share/wordlists` directory and extract the `rockyou.txt.gz` file. Then copy the extracted file to the directory (project.lab) and then use `head -n 20 rockyou.txt > passwords.txt` to only put 20 lines of rockyou.txt into passwords.txt. 
+
+⚠️ rockyou.txt is commonly used in password attacks and comes pre-installed on Kali, but may be compressed by default.
+
+<p align="center">
+  <img src="images/sec/rockyou.png" width="400">
+  <img src="images/sec/password.txt.png" width="400">
+</p>
+
+We will then edit passwords.txt and put our specified password "admin@123" which is used to login for the IT01 user via RDP.
+
+![cat-passwords](images/sec/cat-passwords.png)
 
 
+🖥️ Step 4: Enable Remote Desktop on HRT-DC
+To allow remote brute-force login attempts, you must enable Remote Desktop Protocol (RDP) on the target machine. Follow steps below in the figur to enable remote desktop. You can choose which users to be able to use RDP:
+
+![remote](images/sec/remote1.png)
+![remote](images/sec/remote2.png)
    
 
     
