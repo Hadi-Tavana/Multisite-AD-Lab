@@ -389,6 +389,7 @@ Verify connectivity. Ping the target machine and google.com
 ![NetworkCheck](images/sec/networkcheck.png)
 
 🧰 Step 2: Update Kali Linux Packages
+
 Before installing or using any tools, ensure your Kali Linux system is up to date.
 
 Run the following command in the terminal:
@@ -397,16 +398,17 @@ Run the following command in the terminal:
 
 This will:
 
-Refresh the package list (apt-get update)
-
-Upgrade all installed packages to their latest version (apt-get upgrade)
+- Refresh the package list (apt-get update)
+- Upgrade all installed packages to their latest version (apt-get upgrade)
 
 💡 Keeping Kali updated ensures you have the latest features, tools, and security patches.
 
 📁 Step 3: Prepare Wordlist Files for Brute-Force Attack
+
 To organize the password lists you’ll use for the Hydra brute-force attack, create a dedicated directory on your Kali Linux desktop.
 
 🔨 Create a Directory on Desktop
+
 Open a terminal and run: `mkdir project.lab`
 
 ![directory](images/sec/project.lab-dir.png)
@@ -414,6 +416,7 @@ Open a terminal and run: `mkdir project.lab`
 This folder will store your custom or existing wordlists.
 
 📄 Add Wordlists
+
 We'll create a short custom password list based on rockyou.txt and add a known valid credential (admin@123) for Hydra to find during the brute-force simulation.
 
 Go to `/usr/share/wordlists` directory and extract the `rockyou.txt.gz` file. Then copy the extracted file to the directory (project.lab) and then use `head -n 20 rockyou.txt > passwords.txt` to only put 20 lines of rockyou.txt into passwords.txt. 
@@ -431,16 +434,96 @@ We will then edit passwords.txt and put our specified password "admin@123" which
 
 
 🖥️ Step 4: Enable Remote Desktop on HRT-DC
+
 To allow remote brute-force login attempts, you must enable Remote Desktop Protocol (RDP) on the target machine. Follow steps below in the figur to enable remote desktop. You can choose which users to be able to use RDP:
 
 ![remote](images/sec/remote1.png)
 ![remote](images/sec/remote2.png)
    
+🚀 Step 5: Launch Brute-Force Attack Using Hydra
 
+🔍 What is Hydra?
+
+Hydra is a fast and flexible login cracker commonly used in security assessments and penetration testing. It supports a wide range of protocols (including SSH, FTP, HTTP, RDP, SMB, etc.) and allows brute-force or dictionary attacks against login services.
+
+![hydra](images/sec/hydra.png)
+
+In this lab, we use Hydra to simulate a brute-force attack on the Remote Desktop Protocol (RDP) of the Windows Server.
+
+🧪 Execute the Attack
+
+Run the following command from your Kali terminal: `hydra -t 4 -V -l IT01 -P passwords.txt rdp://192.168.2.20`
+
+![Brute-Force](images/sec/hydra-brute.png)
+
+🧵 Command Breakdown:
+
+- `-t 4` → Use 4 parallel threads for faster attack
+- `-V` → Enable verbose mode (displays each login attempt)
+- `-l IT01` → Target username (IT01)
+- `-P passwords.txt` → Path to password wordlist (created in Step 3)
+- `rdp://192.168.2.20` → Specifies the protocol and IP of the target
+
+⚠️ Ensure that port 3389 is open on the target and that the passwords.txt file contains the correct password (admin@123) for a successful brute-force result.
     
  
+📊 Step 6: View Brute-Force Logs in Splunk
+After running the Hydra brute-force attack, you can use Splunk to analyze Windows Security logs and detect failed login attempts.
 
+🟢 I. Open Splunk Web
+Navigate to the Splunk web interface in your browser: `http://<splunk-ip>:8000`
 
+In this lab, the address is: `http://192.168.2.10:8000`
 
+🔎 II. Go to Search & Reporting App
 
+Click on Search & Reporting from the home dashboard or from the Apps dropdown.
+
+🧭 III. Perform a Search for the Target Machine
+Use the following SPL (Search Processing Language) query: `index="HRT-DC" IT01`
+
+- HRT-DC: Name of the index where logs from the target machine are stored
+- IT01: The username targeted by Hydra
+
+⏱️ IV. Set Time Range to "Last 15 minutes":
+
+Use the Time Range Picker in the top right. Select Last 15 minutes to match the time window of your Hydra attack. This will show log events related to failed RDP logins during the attack window.
+
+![splunk-logs](images/sec/splunk-logs.png)
+You should see a view similar to this.
    
+🕵️‍♂️ Step 7: Analyze Security Events for Login Activity (4625 & 4624)
+
+After searching the logs in Splunk, you can scroll through the indexed events to identify login attempts based on Windows Event IDs.
+
+📌 Key Event Codes:
+- 4625 – Failed login attempt
+- 4624 – Successful login
+
+These events help detect brute-force behavior and confirm whether the attacker succeeded.
+
+Analyze Event-ID 4625:
+<p align="center">
+  <img src="images/sec/event-code.png" width="400">
+  <img src="images/sec/eventid-4625.png" width="400">
+</p>
+
+And 4624:
+<p align="center">
+  <img src="images/sec/login-successful.png" width="400">
+  <img src="images/sec/eventid-4624.png" width="400">
+</p>
+
+🧠 What to Analyze:
+
+- How many times the user IT01 failed to log in (4625 events)?
+- When did the success occur (4624)?
+- Source IP of the login attempts — Hydra’s machine (Kali)
+- Patterns in timing — are attempts spaced tightly together?
+
+Click on `show all n logs` and scroll down to see the network information:
+
+![4624-logs](images/sec/show-log-4624.png)
+![network-logs](images/sec/show-log-network.png)
+
+---
