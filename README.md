@@ -14,6 +14,7 @@ This project simulates a realistic enterprise network environment across three g
 3. [Site-to-Site IPsec VPN Configuration](#site-to-site-ipsec-vpn-configuration)
 4. [AD DS Installation and Configuration](#ad-ds-installation-and-configuration)
 5. [Security Monitoring & Adversary Emulation](#security-monitoring-and-adversary-emulation)
+6. [Security Simulation: Brute Force Detection via RDP](#security-simulation:-brute-force-detection-via-rdp)
 
 ---
 
@@ -806,7 +807,7 @@ This data includes logs collected by Sysmon such as process creation, network co
 
   ![telemetry](images/sec/telemetry.png)
   
-### 🔐 Security Simulation: Brute Force Detection via RDP
+# Security Simulation: Brute Force Detection via RDP
 
 This section demonstrates a security simulation where a brute-force attack is launched using Hydra against a Windows machine with RDP enabled. The objective is to observe how this activity is logged and visualized in Splunk for security monitoring and alerting.
 
