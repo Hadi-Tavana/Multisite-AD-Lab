@@ -958,3 +958,17 @@ Click on `show all n logs` and scroll down to see the network information:
 ![network-logs](images/sec/show-log-network.png)
 
 ---
+
+🧪 Introduction to Atomic Red Team
+
+Atomic Red Team is an open-source project by Red Canary that provides small, highly portable tests (called atomics) designed to simulate specific adversary behaviors mapped to the [MITRE ATT&CK® framework](https://attack.mitre.org/).
+
+These tests are safe to run in a lab environment and allow security professionals to:
+
+Validate that their detection tools (like Splunk) are correctly logging and alerting on malicious behaviors.
+
+Improve detection coverage by identifying blind spots.
+
+Gain hands-on experience with real-world attack techniques without the risk of running uncontrolled malware.
+
+In this lab, I will integrate Atomic Red Team with my SOC simulation to generate realistic telemetry on my Windows endpoint (HRT-PC01). This will help test my Splunk dashboards, detection rules, and investigation workflows against simulated attacks.
