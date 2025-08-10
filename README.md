@@ -972,3 +972,56 @@ Improve detection coverage by identifying blind spots.
 Gain hands-on experience with real-world attack techniques without the risk of running uncontrolled malware.
 
 In this lab, I will integrate Atomic Red Team with my SOC simulation to generate realistic telemetry on my Windows endpoint (HRT-PC01). This will help test my Splunk dashboards, detection rules, and investigation workflows against simulated attacks.
+
+ Installing Atomic Red Team on Windows
+Open PowerShell as Administrator
+
+Press Start, type PowerShell, right-click Windows PowerShell, and select Run as Administrator.
+
+Set PowerShell Execution Policy
+Run the following command:
+<pre lang="Markdown">
+  powershell
+Set-ExecutionPolicy Bypass -Scope CurrentUser
+</pre>
+What this does:
+PowerShell’s Execution Policy controls which scripts are allowed to run on your system.
+
+By default, Windows may block scripts for security reasons.
+
+Setting it to Bypass for the CurrentUser scope temporarily removes these restrictions for your account, allowing you to run the Atomic Red Team installation script without being blocked.
+
+This change does not affect other users on the system and can be reverted later with:
+<pre lang="Markdown">
+  powershell
+Set-ExecutionPolicy Restricted -Scope CurrentUser
+</pre>
+
+![set-executionPolicy](images/sec/set-executionPolicy.png)
+
+🛑 Disabling Windows Defender (for Lab Purposes Only)
+Some Atomic Red Team tests may trigger Windows Defender detections or blocks. To ensure the tests run without interference, I am temporarily disabling Windows Defender in my lab environment.
+
+⚠ Important: Disabling Windows Defender reduces your system’s protection. This should only be done in an isolated lab and never on a production machine.
+
+Steps to Disable Windows Defender:
+
+Open Windows Security
+
+Press Start → type Windows Security → press Enter.
+
+Go to Virus & Threat Protection
+
+In the left-hand menu, click Virus & threat protection.
+
+Under the Virus & threat protection settings section, click Manage settings.
+
+Turn Off Real-Time Protection
+
+Toggle Real-time protection to Off.
+
+You may receive a prompt from User Account Control (UAC)—click Yes to confirm.
+
+💡 Windows Defender will usually re-enable itself after a reboot. If you want it off for the entire testing session, repeat these steps after restarting.
+
+![windowsDefender](images/sec/windowsDefender.png)
