@@ -1028,13 +1028,13 @@ You may receive a prompt from User Account Control (UAC)—click Yes to confirm.
 
 After that, go to the Atomic Red Team GitHub repository and copy the provided PowerShell installation command. Open PowerShell as an administrator, paste the command, and execute it. Wait until the download and installation process is completed.
 
-![GitHubAtomicRedTeam](images/sec/GitHubAtomicRedTeam)
+![GitHubAtomicRedTeam](images/sec/GitHubAtomicRedTeam.png)
 
-![atomicRedTeam](images/sec/atomicRedTeam)
+![atomicRedTeam](images/sec/atomicRedTeam.png)
 
 After the installation is complete, navigate to your **C:** drive. Inside it, you’ll find the **Atomic Red Team** folder, which contains a subfolder named **atomics**. Within the **atomics** folder, you’ll see multiple subfolders — each corresponding to a specific **MITRE ATT\&CK** technique.
 
-![ARTTactics](images/sec/ARTTactics)
+![ARTTactics](images/sec/ARTTactics.png)
 
 **MITRE ATT\&CK Framework**
 The MITRE ATT\&CK (Adversarial Tactics, Techniques, and Common Knowledge) framework is a globally recognized knowledge base of adversary behavior. It organizes cyberattack methods into **tactics** (the “why” — the attacker’s objectives) and **techniques** (the “how” — the specific actions attackers take to achieve their objectives).
