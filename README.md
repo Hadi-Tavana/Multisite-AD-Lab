@@ -1025,3 +1025,64 @@ You may receive a prompt from User Account Control (UAC)—click Yes to confirm.
 💡 Windows Defender will usually re-enable itself after a reboot. If you want it off for the entire testing session, repeat these steps after restarting.
 
 ![windowsDefender](images/sec/windowsDefender.png)
+
+After that, go to the Atomic Red Team GitHub repository and copy the provided PowerShell installation command. Open PowerShell as an administrator, paste the command, and execute it. Wait until the download and installation process is completed.
+
+![GitHubAtomicRedTeam](images/sec/GitHubAtomicRedTeam)
+
+![atomicRedTeam](images/sec/atomicRedTeam)
+
+After the installation is complete, navigate to your **C:** drive. Inside it, you’ll find the **Atomic Red Team** folder, which contains a subfolder named **atomics**. Within the **atomics** folder, you’ll see multiple subfolders — each corresponding to a specific **MITRE ATT\&CK** technique.
+
+![ARTTactics](images/sec/ARTTactics)
+
+**MITRE ATT\&CK Framework**
+The MITRE ATT\&CK (Adversarial Tactics, Techniques, and Common Knowledge) framework is a globally recognized knowledge base of adversary behavior. It organizes cyberattack methods into **tactics** (the “why” — the attacker’s objectives) and **techniques** (the “how” — the specific actions attackers take to achieve their objectives).
+
+**Techniques**
+A technique describes *how* an attacker accomplishes a particular goal. For example, “Credential Dumping” is a technique that attackers may use to steal credentials from a compromised system. Each technique in the MITRE ATT\&CK framework has a unique ID (e.g., **T1003** for Credential Dumping), and Atomic Red Team provides small, easy-to-run “atomic tests” to simulate these techniques in your environment for detection and training purposes.
+
+Next, we can use Atomic Red Team (ART) to simulate an attack technique and verify its detection in the Splunk server.
+
+For this test, I executed the T1059.003 – Command and Scripting Interpreter: Windows Command Shell technique.
+This technique involves using cmd.exe to execute commands, which is a common method adversaries use to run malicious code, automate tasks, or interact with the operating system. Attackers may leverage the Windows Command Shell to download payloads, execute scripts, or modify system settings without direct user interaction.
+
+![invoke](images/sec/invoek.png)
+
+After running the technique, my Windows VM quickly filled up with multiple instances of WordPad — this was part of the test simulation. I waited for the activity to complete and then moved to Splunk for analysis.
+
+![attack.png](images/sec/attack.png)
+
+Because my Windows VM was still operational thanks to the tactics used, I accessed the Splunk web interface from my host machine’s browser instead of directly inside the VM. Once logged into Splunk, I ran the following search query:
+
+<pre lang="Markup">
+ini
+index='hrt-pc01' 'cmd.exe'
+</pre>
+
+This search returned multiple matches, confirming that Splunk successfully collected and indexed the generated logs.
+
+![splunk01.png](images/sec/splunk01.png)
+
+The results also validate that:
+
+Splunk Server is operational.
+
+Atomic Red Team (ART) executed the technique correctly.
+
+Splunk Universal Forwarder is successfully sending event data.
+
+Sysmon is actively logging process creation events.
+
+This proves the end-to-end functionality of the detection pipeline — from simulation with ART, to log forwarding, to event detection in Splunk.
+
+Conclusion
+This lab successfully demonstrated the end-to-end process of building and validating a threat detection environment from scratch. Starting with installing Splunk Enterprise on an Ubuntu Server, we configured it as our centralized SIEM platform. We then deployed the Splunk Universal Forwarder on a Windows VM to collect logs and installed Sysmon to enrich those logs with detailed process and system activity.
+
+Once the log pipeline was in place, we integrated Atomic Red Team (ART) to simulate adversary behaviors in a safe and controlled manner. By executing MITRE ATT&CK technique T1059.003 (Windows Command Shell), we generated realistic attack telemetry. The simulated activity — which resulted in the creation of multiple WordPad instances — was successfully detected and indexed in Splunk.
+
+Our Splunk searches confirmed that the detection and logging infrastructure was functioning as intended, proving that the Ubuntu-based Splunk server, the Splunk Forwarder, and Sysmon were correctly integrated. This workflow not only validated our setup but also provided a repeatable method for testing future detection rules and incident response playbooks.
+
+Through this project, we’ve built a fully operational detection lab that bridges theory with hands-on practice, enabling continuous improvement of security monitoring capabilities.
+
+
