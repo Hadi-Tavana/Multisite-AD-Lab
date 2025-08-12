@@ -1047,7 +1047,7 @@ Next, we can use Atomic Red Team (ART) to simulate an attack technique and verif
 For this test, I executed the T1059.003 – Command and Scripting Interpreter: Windows Command Shell technique.
 This technique involves using cmd.exe to execute commands, which is a common method adversaries use to run malicious code, automate tasks, or interact with the operating system. Attackers may leverage the Windows Command Shell to download payloads, execute scripts, or modify system settings without direct user interaction.
 
-![invoke](images/sec/invoek.png)
+![invoke](images/sec/invoke.png)
 
 After running the technique, my Windows VM quickly filled up with multiple instances of WordPad — this was part of the test simulation. I waited for the activity to complete and then moved to Splunk for analysis.
 
