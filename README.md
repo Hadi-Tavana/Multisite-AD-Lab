@@ -1,4 +1,5 @@
-Lab with IPsec VPN and Security Monitoring
+# Lab with IPsec VPN and Security Monitoring
+
 Welcome to the multisite active directory lab with site-to-site VPN configuration and implemented security measures. This lab has been created in collaboration with [edris526](https://github.com/edris526).
 
 ![PROJECT-MAP](images/project-diagram.png)
