@@ -15,7 +15,7 @@ This project simulates a realistic enterprise network environment across three g
 4. [AD DS Installation and Configuration](#ad-ds-installation-and-configuration)
 5. [Security Monitoring & Adversary Emulation](#security-monitoring-and-adversary-emulation)
 6. [Security Simulation: Brute Force Detection via RDP](#security-simulation-brute-force-detection-via-rdp)
-7. [Attack Simulation with Atomic Red Team](#attack-simulation-with-atomic-read-team)
+7. [Attack Simulation with Atomic Red Team](#attack-simulation-with-atomic-red-team)
 8. [Conclusion](#conclusion)
 
 ---
