@@ -15,6 +15,8 @@ This project simulates a realistic enterprise network environment across three g
 4. [AD DS Installation and Configuration](#ad-ds-installation-and-configuration)
 5. [Security Monitoring & Adversary Emulation](#security-monitoring-and-adversary-emulation)
 6. [Security Simulation: Brute Force Detection via RDP](#security-simulation-brute-force-detection-via-rdp)
+7. [Attack Simulation with Atomic Red Team](#attack-simulation-with-atomic-read-team)
+8. [Conclusion](#conclusion)
 
 ---
 
@@ -310,144 +312,203 @@ Finally check the HRT-DC and MZR-DC servers if they have recieved the mentioned 
 
 # Security Monitoring and Adversary Emulation
 
-2. Splunk Enterprise Setup:
+Splunk Enterprise Setup:
    
    I started by downloading both Splunk Enterprise and Ubuntu Server. Splunk will be hosted on the Ubuntu Server virtual machine.
    
  📌 Introduction to Splunk Enterprise:
 
  Splunk Enterprise is a widely adopted platform designed for collecting, indexing, and analyzing machine data in real time. It supports log ingestion from a wide range of sources and is commonly used in Security Operations Centers (SOCs) as a Security Information and Event Management (SIEM) solution. With its powerful search capabilities and rich visualizations, Splunk helps security teams detect threats, investigate incidents, and monitor system activity effectively.
-2)my benefits from working on splunk on this lab.
+ 
+The benefits of working on splunk on this lab:
+
 Integrating Splunk Enterprise into my home lab environment has been a valuable step toward building practical cybersecurity skills. With this setup, I can continuously monitor system activity, detect suspicious behavior, and simulate real-world SOC operations. This hands-on approach not only strengthens my understanding of how modern security tools work but also improves my ability to respond to potential threats—an essential skillset for anyone pursuing a career in cybersecurity.
 
-⬇️ Downloading Splunk Enterprise (Free Trial)
+### 1. Downloading Splunk Enterprise (Free Trial)
 
-1.Visit the official [Splunk website](https://www.splunk.com)
-2.Log in or create a free account.
-3.Navigate to Products > Free Trials and Downloads.
-4.Select Splunk Enterprise, then click Get My Free Trial.
-5.Choose your host operating system. Since I’m using Ubuntu Server, I selected the Linux .deb package for Debian-based distributions.
+I. Visit the official [Splunk website](https://www.splunk.com)
 
-2.Downloading Ubuntu server:
+II. Log in or create a free account.
+
+III. Navigate to Products > Free Trials and Downloads.
+
+IV. Select Splunk Enterprise, then click Get My Free Trial.
+
+V. Choose your host operating system. Since I’m using Ubuntu Server, I selected the Linux .deb package for Debian-based distributions.
+
+### 2. Downloading Ubuntu server:
+
  I downloaded the latest LTS version of Ubuntu from the [Ubuntu Downloads page](https://ubuntu.com/download/server). At the time of writing, the newest version available was Ubuntu 24.04.2 LTS, and the ISO file was approximately 3GB
 
-   3.Creating the Ubuntu VM on VMware:
+### 3. Creating the Ubuntu VM on VMware:
+
 With the ISO downloaded, I proceeded to create the Ubuntu VM on vmware workstation:
--Allocated 2 CPUs, 4 GB RAM, and 30 GB disk space.
--Used VMnet2(hostonly) to ensure connectivity with my vyos router.
+
+- Allocated 2 CPUs, 4 GB RAM, and 30 GB disk space.
+- Used VMnet2(hostonly) to ensure connectivity with my vyos router.
+
 ![ubentuServerVMOverview.png](images/sec/ubentuServerVMOverview.png)
-  Network Configuration:
+
+Network Configuration:
+
 ![Image of VMnet2 config](images/sec/VMnet2.png)
 
-4. Installing Uebntu Server:
+### 4. Installing Uebntu Server:
+
 I attached the ISO to the new VM and started the system. I used the default installation options, pressing Enter until installation completed and the system rebooted.
-5. Enabling Remote Access with PuTTY
+
+### 5. Enabling Remote Access with PuTTY
+
 After installation, I used PuTTY on my Windows host to connect to the Ubuntu Server VM.
+
 🔌 Prerequisites
-The VM must be powered on and connected to the same network as the host.
-Ensure OpenSSH Server is installed (enabled by default). If not, install it:
+ - The VM must be powered on and connected to the same network as the host.
+ - Ensure OpenSSH Server is installed (enabled by default). If not, install it:
+
 <pre lang="markdown">bash
   sudo apt install openssh-server</pre>
+
 🔍 Finding the IP Address
+
 Run this command on the Ubuntu VM:
+
 <pre lang="markdown">bash
   ip a</pre>
+
 📸 Example:
 ![ipaddress config of ubentu server](images/sec/ipA.png)
+
 💻 Access via PuTTY
-Open PuTTY on Windows.
-Enter the IP address in the Host Name field.
+
+Open PuTTY on Windows. Enter the IP address in the Host Name field.
 Set Port to 22 and Connection Type to SSH.
 Click Open.
+
 📸 PuTTY Configuration:
+
 ![putty](images/sec/putty.png)
-Log In
-A terminal window will open
-Enter your Ubuntu username and password
+
+Log In. A terminal window will open. Enter your Ubuntu username and password
+
 ![Login Putty](images/sec/loginPutty.png)
+
 ![Putty Overview](images/sec/puttyOverview.png)
    
-
 I then took a snapshot of the VM at this clean, fully updated state to serve as a baseline for future rollback if needed.
 
-7) uentu server network config:
-   Since I'm working in the HRT-Site environment, I assigned the following static IP settings:
--IP Address: 192.168.2.10
--Gateway: My VyOS router
--DNS Server: My home router's IP (instead of 8.8.8.8, since external DNS is filtered in my country)
+
+### 6. Ubentu server network configuration:
+
+Since I'm working in the HRT-Site environment, I assigned the following static IP settings:
+
+ - IP Address: 192.168.2.10
+ - Gateway: My VyOS router
+ - DNS Server: My home router's IP (instead of 8.8.8.8, since external DNS is filtered in my country)
+
 ⚠️ Note: Setting DNS to 8.8.8.8 caused internet loss due to regional filtering. Using my home router as DNS resolved the issue.
+
 🛠️ To Set Static IP
+
 Edit the Netplan configuration file:
+
 <pre lang="Markdown">bash
   sudo nano /etc/netplan/00-installer-config.yaml</pre>
+
 📸 Netplan Configuration:
-   ![network config ubentu server](images/sec/netplan.png)
-   Apply changes and verify internet connectivity:
+
+![network config ubentu server](images/sec/netplan.png)
+
+Apply changes and verify internet connectivity:
+   
    <pre lang="markdown"> bash 
    sudo netplan apply
    ping google.com </pre>
-   📸 Ping Test:
- ![ping](images/sec/ping.png)
-7. System Update
+   
+📸 Ping Test:
+ 
+![ping](images/sec/ping.png)
+
+### 7. System Update
+
 Finally, I updated the Ubuntu system to ensure all packages were current:
+
 <pre lang="markdown">bash
 sudo apt update
 sudo apt upgrade</pre>
 
 
-8.⚙️ Installing VMware Tools on Ubuntu Server
+### 8.⚙️ Installing VMware Tools on Ubuntu Server
+
 Installing VMware Tools improves virtual machine performance and enables features such as better network drivers, time synchronization, and smoother integration with the host system.
 and aslo we need to share splunk setup from host machine wit the vm(ubentu server).
 For Ubuntu Server, the recommended method is to install the open-vm-tools package provided through the official Ubuntu repositories.
 📦 Step-by-Step Guide
+
 Update Package List
+
 <pre lang="Markdown">
 bash
 sudo apt update
 </pre>
+
 Install Open VM Tools 
+
 <pre lang="Markdown">
 bash
 sudo apt install open-vm-tools -y
 </pre>
+
 Verify the Installation
+
 Check the version to confirm installation:
+
 <pre lang="Markdown">
 bash
 vmware-toolbox-cmd -v
 </pre>
+
 [vmTool](images/sec/vmTool)
-📌 Notes
+
+📌 Notes:
+
 There's no need to mount the ISO or install VMware Tools manually—the open-vm-tools package is the official and preferred method for Ubuntu.
 Now that VMware Tools is installed, your VM will perform better, and features like time sync and graceful shutdown will work reliably.
 
 🔄 Sharing Splunk Installer from Host to Ubuntu Server VM
+
 To transfer the Splunk Enterprise installer from your Windows host machine to your Ubuntu Server VM, you can use a VMware feature called Shared Folders. This allows your virtual machine to access a directory from your host system as if it were part of the VM's file system.
 
 🧰 What is Shared Folders?
+
 Shared Folders is a VMware Workstation/Player feature that enables file sharing between the host and guest systems without using USB drives, SCP, or network file transfers. It's ideal for quickly moving files like installers, scripts, or configuration files.
 
 📦 Step-by-Step Guide to Enable Shared Folders
+
 🔒 Ensure VMware Tools (open-vm-tools) is installed and running on your Ubuntu Server before proceeding.
-1. Configure Shared Folder in VMware
--Power off your Ubuntu VM (if it's running).
--Open VMware Workstation or Player.
--Select your VM > Click Edit virtual machine settings.
--Go to the Options tab.
--Select Shared Folders.
+
+I. Configure Shared Folder in VMware
+
+- Power off your Ubuntu VM (if it's running).
+- Open VMware Workstation or Player.
+- Select your VM > Click Edit virtual machine settings.
+- Go to the Options tab.
+- Select Shared Folders.
 
 Example:
 
 ![shareFolderConfig](images/sec/shareFolderConfig.png)
--Choose Always enabled or Enabled until next power off or suspend.
--Click Add… and:
--Browse to the folder on your host where the Splunk installer (.deb file) is located.
--Give it a name like splunk-share.
--Click Finish, then OK to apply the changes.
-![shreFolderBrowse](images/sec/shareFolderBrowse.png)
--Start your Ubuntu VM.
 
-2. Access the Shared Folder in Ubuntu
+- Choose Always enabled or Enabled until next power off or suspend.
+- Click Add… and:
+- Browse to the folder on your host where the Splunk installer (.deb file) is located.
+- Give it a name like splunk-share.
+- Click Finish, then OK to apply the changes.
+
+![shreFolderBrowse](images/sec/shareFolderBrowse.png)
+
+Start your Ubuntu VM.
+
+II. Access the Shared Folder in Ubuntu
    
 Once the VM is running, VMware automatically mounts the shared folder to the path:
 
@@ -503,18 +564,18 @@ and list it's contains:
 
 ![splunkConfig1](images/sec/splunkConfig1.png)
 
-this shows that splunk is installed successfully
+This shows that splunk is installed successfully
 
-now hit to the follwing directory and run the follwing commands which will run splunk:
+Now hit to the follwing directory and run the follwing commands which will run splunk:
 
 <pre lang="Markdown">bash
 cd /bin/splunk
   sudo ./splunk start
 </pre>
 
-go through the liesanse aggrement and you will be asked to a username and password. 
+Go through the license agreement and you will be asked to a username and password. 
 
-now we want to enable splunk on boot so every time the vm boots up splunk will be running:
+Now we want to enable splunk on boot so every time the vm boots up splunk will be running:
 
 <pre lang="Markdonw">bash
   cd bin
@@ -523,10 +584,13 @@ now we want to enable splunk on boot so every time the vm boots up splunk will b
 
 ![splunkEnabledonBootStart](images/sec/splunkEnabledonBootStart.png)
 
-the next step is to install splunk forwarder on our windows machines. I am going to demostrate how I did it on windows 10. It should be the same accross other vms too. 
-First we need to join my windows mashine to the domain. To do so will asign a static ip address to it and check it's reachblitiy with the DC.
+### 9. Installing Splunk Forwarder on Windows machines:
 
-My windows 10's network adapter is in vmnet2(Hostonly) which is the same vmnet in which my ubentu server, vyos router and kali lunix are.
+The next step is to install splunk forwarder on our windows machines. I am going to demostrate how I did it on windows 10. It should be the same accross other vms too. 
+
+First we need to join my windows machine to the domain. To do so will asign a static ip address to it and check it's reachblitiy with the DC.
+
+My windows 10's network adapter is in vmnet2 (Host-only) which is the same vmnet in which my ubentu server, vyos router and kali lunix are.
 
 ![ipconfigWindows10](images/sec/ipconfigWindows10.png)
 
@@ -540,34 +604,33 @@ afterwards you pc will require a reboot and then log in as a domain user:
 
 ![loginAsAdmin](images/sec/loginAsAdmin.png)
 
-
 now my vm is a part of project.lab domain
 
 ![aPartofDomain](images/sec/aPartofDomain.png)
 
 📦 What is Splunk Universal Forwarder?
+
 The Splunk Universal Forwarder (UF) is a lightweight version of Splunk designed specifically for collecting and forwarding logs and machine data to a central Splunk instance (typically a Splunk Enterprise or Splunk Cloud server). It runs as a background service and is optimized for minimal resource usage while maintaining high-speed data transfer.
 
 Unlike the full Splunk Enterprise instance, the Universal Forwarder has no web interface or data indexing capabilities. Its primary role is to gather data (e.g., Windows Event Logs, files, registry, or performance metrics) from the host and send it to a central Splunk indexer or heavy forwarder.
 
 🧠 Why Use Splunk Forwarder?
+
 Using a Universal Forwarder in a distributed Splunk architecture offers several key benefits:
 
-Centralized Logging: Collect logs from multiple endpoints and forward them to a centralized Splunk server for analysis and visualization.
+- Centralized Logging: Collect logs from multiple endpoints and forward them to a centralized Splunk server for analysis and visualization.
+- Lightweight & Efficient: Designed to run with minimal system impact, making it ideal for desktops, servers, or embedded systems.
+- Secure Data Transmission: Supports encrypted and authenticated communication with your Splunk indexers.
+- Real-time Data Delivery: Enables near real-time forwarding of logs, which is crucial for security monitoring, incident response, and compliance.
 
-Lightweight & Efficient: Designed to run with minimal system impact, making it ideal for desktops, servers, or embedded systems.
-
-Secure Data Transmission: Supports encrypted and authenticated communication with your Splunk indexers.
-
-Real-time Data Delivery: Enables near real-time forwarding of logs, which is crucial for security monitoring, incident response, and compliance.
-
-In this documentation, we will walk through the steps to install and configure the Splunk Universal Forwarder on a Windows 10 machine and ensure it forwards logs to a Splunk Enterprise server running on a different system (in our case, an Ubuntu server).
+In this part of the documentation, we will walk through the steps to install and configure the Splunk Universal Forwarder on a Windows 10 machine and ensure it forwards logs to a Splunk Enterprise server running on a different system (in our case, an Ubuntu server).
 
 📥 Step 1: Download and Install the Forwarder
+
 Download the 64-bit MSI installer for Windows.
 head to the [splunk website](https://www.splunk.com/) and log in or sing up then go to the products and click on splunk forwarder and use the free trieal option chose the one which fits your os for me it's the 64 bit windows with .msi extention. 
   
- ![downloadSplunkForwarder](images/sec/forwarderDownlaod.png)
+![downloadSplunkForwarder](images/sec/forwarderDownlaod.png)
 
 
 ![forwarderDownlaod2](images/sec/forwarderDownlaod2.png)
@@ -585,14 +648,14 @@ after the installation is finished
 
 To configure which telemetry data (Windows Event Logs) the Splunk Universal Forwarder should send and to which index, follow these steps:
 
-✅ Step 1: Create the inputs.conf File
-1.Open Notepad as Administrator
+✅ Step 2: Create the inputs.conf File
 
--Click on Start, search for Notepad
+Open Notepad as Administrator
 
--Right-click Notepad → Run as administrator
+- Click on Start, search for Notepad
+- Right-click Notepad → Run as administrator
 
-2.Paste the following configuration into Notepad:
+Paste the following configuration into Notepad:
 
 <pre lang="Markdown">
 
@@ -618,7 +681,7 @@ source = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
 
 🔁 You can customize the index name as desired. For example, I used HRT-PC01 to match the name of my VM.
 
-3.Save the file to the following path:
+Then save the file to the following path:
 
 <pre lang="Markdown">
   
@@ -628,43 +691,40 @@ C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
 
 This configuration tells the Universal Forwarder to collect logs from:
 
--Application
-
--Security
-
--System
-
--Sysmon Operational Channel
+- Application
+- Security
+- System
+- Sysmon Operational Channel
 
 And forwards them all to the specified Splunk index (e.g., endpoint).
 
 ![index=HTR-PC01](images/sec/index=HTR-PC01.png)
 
 ✅ Restarting the Splunk Forwarder Service
+
 Once the configuration changes are made (e.g., updating inputs.conf or outputs.conf), you need to restart the Splunk Forwarder service to apply those changes:
 
-1.Press Win + R, type services.msc, and hit Enter.
-
-2.In the Services window, locate SplunkForwarder.
-
-3.Right-click it and choose Restart.
+- Press Win + R, type services.msc, and hit Enter.
+- In the Services window, locate SplunkForwarder.
+- Right-click it and choose Restart.
 
 👤 Service Account Check
+
 Make sure the Splunk Forwarder service is running under the Local System account:
 
 Right-click on SplunkForwarder in Services and select Properties.
 
-1.Go to the Log On tab.
+- Go to the Log On tab.
+- Ensure Local System account is selected.
+- If not, change it to Local System and restart the service again.
 
-2.Ensure Local System account is selected.
-
--If not, change it to Local System and restart the service again.
-
--This ensures the forwarder has sufficient permissions to collect logs from Sysmon and Windows event logs.
+This ensures the forwarder has sufficient permissions to collect logs from Sysmon and Windows event logs.
 
 ![localSystemAccount](images/sec/localSystemAccount.png)
-  
-it's now time to downlaod , install and configure sysmon
+
+### 10. Install and Configure Sysmon:
+
+It's now time to downlaod , install and configure sysmon
 
 🔍 What is Sysmon?
 
@@ -687,15 +747,12 @@ Click the Download Sysmon button to download a ZIP file containing:
 
 ![sysmonDownlaod](images/sec/sysmonDownlaod.png)
 
--Sysmon.exe – the executable to run Sysmon.
+- Sysmon.exe – the executable to run Sysmon.
+- Sysmon64.exe – 64-bit version.
+- EULA.txt – license agreement.
+- Extract the contents of the ZIP file to a directory of your choice (e.g., C:\Sysmon).
 
--Sysmon64.exe – 64-bit version.
-
--EULA.txt – license agreement.
-
--Extract the contents of the ZIP file to a directory of your choice (e.g., C:\Sysmon).
-
-now we need a configuration fie for sysmon , for thsi lab I used Olaf's configuration.
+now we need a configuration fie for sysmon , for this lab I used Olaf's configuration.
 
 🛠️ Sysmon Config by Olaf Hartong
 
@@ -704,17 +761,18 @@ To enhance the visibility and effectiveness of Sysmon in detecting suspicious ac
 This configuration includes predefined rules for detecting various tactics and techniques based on the MITRE ATT&CK framework. It is widely adopted in blue team environments and threat hunting labs.
 
 📥 How to Download
+
 You can download the latest version of Olaf’s Sysmon configuration from his GitHub repository using the following steps:
 
 Visit the repository:
 
 🔗[github repo](https://raw.githubusercontent.com/olafhartong/sysmon-modular/master/sysmonconfig.xml)
 
-once you visited  the webpage right click it and hit save as. 
+once you visited the webpage right click it and hit save as. 
 
 ![sysmonConfig](images/sec/sysmonConfig.png)
 
-extrct sysmon and put the extracted file on the same direcotry as sysmonconfig.xml and open powershell in the direcotyr.
+extract sysmon and put the extracted file on the same direcotry as sysmonconfig.xml and open powershell in the directory.
 
 ![sysmonWithPowershell](images/sec/sysmonWithPowershell.png)
 
@@ -729,54 +787,57 @@ then run this command:
 
 ![sysmonInstallition](images/sec/sysmonInstallition.png)
 
-Accessing the Splunk Web Interface
+### 11. Accessing the Splunk Web Interface:
+
 Now that both Splunk and Sysmon are properly configured, it's time to make a few final configurations on the Splunk server itself.
 
 Ensure that your Ubuntu server (running Splunk) and your Windows VM (running Sysmon) are on the same network and can communicate with each other. In my setup, both machines are connected to VMnet2, which is configured as a Host-only network in VMware.
 
 To access the Splunk Web Interface:
+I. Open your browser on your host machine.
 
-1.Open your browser on your host machine.
+II. In the address bar, type the IP address of your Ubuntu server followed by port 8000.
 
-2.In the address bar, type the IP address of your Ubuntu server followed by port 8000.
 Example:
 http://192.168.2.10:8000
 
-3.This will bring up the Splunk login page. Use the credentials you created during the installation to log in.
+III. This will bring up the Splunk login page. Use the credentials you created during the installation to log in.
 
 ![splunkLoginPage.png](images/sec/splunkLoginPage.png)
 
 
- Create a New Index in Splunk
+### 12. Create a New Index in Splunk:
  
 After logging in to the Splunk Web Interface:
 
-1.Go to the Settings menu (top right).
+I. Go to the Settings menu (top right).
 
-2.Click on Indexes.
+II. Click on Indexes.
 
-3.On the Indexes page, click New Index.
+III. On the Indexes page, click New Index.
 
-4.Name the index:
+IV. Name the index:
   
   I named it HRT-PC01
+  
   ⚠️ Make sure the name matches the one used in the inputs.conf file.
 
   ![creatingIndex](images/sec/creatingIndex.png)
 
   Leave other settings as default or adjust based on your preference.
 
-Click Save.
+V. Click Save.
 
   you should be able to see your newly created index:
 
   ![index=hrt-pc01](images/sec/index=hrt-pc01.png)
 
   
-🔄 Step 4: Configure Splunk to Receive Logs
-To allow your Splunk server to receive logs from the forwarder (HRT-PC01):
+### 13. Configure Splunk to Receive Logs
 
-In splunk web interface navigate to Settings > Forwarding and receiving.
+To allow your Splunk server to receive logs from the forwarder (HRT-DC):
+
+In splunk web interface navigate to: Settings > Forwarding and receiving.
 
 Under Receive data, click Add new.
 
@@ -788,7 +849,7 @@ Enter 9997 as the port number and click Save.
 
 ![port](images/sec/port.png)
 
-Step 7: Verify Endpoint Telemetry in Splunk
+### 14. Verify Endpoint Telemetry in Splunk
 
 Head over to the Apps section in the top navigation bar.
 
@@ -806,7 +867,9 @@ You will now see all telemetry data that Splunk has received from the Windows en
 This data includes logs collected by Sysmon such as process creation, network connections, registry changes, and more—offering detailed visibility into system activity that can be used for detection and investigatio
 
   ![telemetry](images/sec/telemetry.png)
-  
+
+---
+ 
 # Security Simulation: Brute Force Detection via RDP
 
 This section demonstrates a security simulation where a brute-force attack is launched using Hydra against a Windows machine with RDP enabled. The objective is to observe how this activity is logged and visualized in Splunk for security monitoring and alerting.
@@ -959,6 +1022,8 @@ Click on `show all n logs` and scroll down to see the network information:
 
 ---
 
+# Attack Simulation with Atomic Red Team
+
 🧪 Introduction to Atomic Red Team
 
 Atomic Red Team is an open-source project by Red Canary that provides small, highly portable tests (called atomics) designed to simulate specific adversary behaviors mapped to the [MITRE ATT&CK® framework](https://attack.mitre.org/).
@@ -984,6 +1049,7 @@ Run the following command:
   powershell
 Set-ExecutionPolicy Bypass -Scope CurrentUser
 </pre>
+
 What this does:
 PowerShell’s Execution Policy controls which scripts are allowed to run on your system.
 
@@ -1000,6 +1066,7 @@ Set-ExecutionPolicy Restricted -Scope CurrentUser
 ![set-executionPolicy](images/sec/set-executionPolicy.png)
 
 🛑 Disabling Windows Defender (for Lab Purposes Only)
+
 Some Atomic Red Team tests may trigger Windows Defender detections or blocks. To ensure the tests run without interference, I am temporarily disabling Windows Defender in my lab environment.
 
 ⚠ Important: Disabling Windows Defender reduces your system’s protection. This should only be done in an isolated lab and never on a production machine.
@@ -1076,7 +1143,8 @@ Sysmon is actively logging process creation events.
 
 This proves the end-to-end functionality of the detection pipeline — from simulation with ART, to log forwarding, to event detection in Splunk.
 
-Conclusion
+# Conclusion
+
 This lab successfully demonstrated the end-to-end process of building and validating a threat detection environment from scratch. Starting with installing Splunk Enterprise on an Ubuntu Server, we configured it as our centralized SIEM platform. We then deployed the Splunk Universal Forwarder on a Windows VM to collect logs and installed Sysmon to enrich those logs with detailed process and system activity.
 
 Once the log pipeline was in place, we integrated Atomic Red Team (ART) to simulate adversary behaviors in a safe and controlled manner. By executing MITRE ATT&CK technique T1059.003 (Windows Command Shell), we generated realistic attack telemetry. The simulated activity — which resulted in the creation of multiple WordPad instances — was successfully detected and indexed in Splunk.
